@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="kw_gem_invoicing_template_inv2_p1" name="inv_2_p1_template">
+        <t t-call="web.basic_layout">
+            <t t-set="doc" t-value="doc"/>
+            <t t-set="user" t-value="request.env.user"/>
+
+            <!-- First Page  -->
+            <!-- <div class="page" style="page-break-after:always;"> -->
+            <div class="page">
+                <div class="text-center border-bottom">
+                    <div class="row py-1">
+                        <div class="col-3 mb4 text-left">
+                            <img t-attf-src="/logo.png?company={{ doc.company_id.id }}" style="max-height:110px;" t-att-alt="doc.company_id.name"/>
+                        </div>
+                        <div class="col-9 text-right">
+                            <!-- <span t-field="doc.company_id.kw_header_to_template"/> -->
+                            <span>ქ.თბილისი, ჩაჩავას ქ. №1; 0159. ტ: 00(995) 032 2 47 59 60, e-mail: info@pathlab.ge</span>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="mt-5 fw-bold">ინვოისი</h4>
+                <br/>
+                <table class="w-50 border-white">
+                    <tbody>
+                        <tr>
+                            <td class="w-50">ინვოისის ნომერი:</td>
+                            <td class="w-50"><span t-field="doc.name"/></td>
+                        </tr>
+                        <tr>
+                            <td class="w-50">ინვოისის თარიღი:</td>
+                            <td class="w-50"><span t-field="doc.invoice_date"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/><br/>
+                <table class="w-50 border-white">
+                    <tbody>
+                        <tr>
+                            <td class="w-50">შემსრულებელიr:</td>
+                            <td class="w-50"><span t-field="user.company_id.name"/></td>
+                        </tr>
+                        <tr>
+                            <td class="w-50">შემსრულებლის ს/კ:</td>
+                            <td class="w-50"><span t-field="user.company_id.vat"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <table class="w-50 border-white">
+                    <tbody>
+                        <tr>
+                            <td class="w-50">დამკვეთი:</td>
+                            <td class="w-50"><span t-field="doc.partner_id.name"/></td>
+                        </tr>
+                        <tr>
+                            <td class="w-50">დამკვეთის ს/კ:</td>
+                            <td class="w-50"><span t-field="doc.partner_id.vat"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <table class="table table-bordered border-dark w-100">
+                    <thead class="text-center">
+                        <tr>
+                            <th>ჩატარებული მომსახურება</th>
+                            <th>თანხა</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span ><t t-esc="doc.narration"/></span></td>
+                            <td class="text-end"><span t-esc="doc.kw_total_payable_amount"/></td>
+                        </tr>
+                        <tr class="fw-bold">
+                            <td>ჯამური თანხა</td>
+                            <td class="text-end"><span t-esc="doc.kw_total_payable_amount"/></td>
+                        </tr>
+                        <tr>
+                            <td>ფასდაკლება</td>
+                            <td class="text-end"><span t-esc="doc.kw_add_discount"/></td>
+                        </tr>
+                        <tr class="fw-bold">
+                            <td >საბოლოო თანხა ასანაზღაურებლად</td>
+                            <td class="text-end"><span t-esc="doc.kw_final_payable_amount"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <table class="w-100 border-white">
+                    <thead>
+                        <tr class="text-start">
+                            <th colspan="2">საბანკო რეკვიზიტები</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="bank" t-value="user.company_id.bank_ids[0]"/>
+                        <tr>
+                            <td class="w-50">მიმღები:</td>
+                            <td class="w-50"><span t-esc="user.company_id.name"/></td>
+                        </tr>
+                        <tr>
+                            <td class="w-50">ბანკის დასახელება:</td>
+                            <td class="w-50"><span t-esc="bank.bank_id.name"/></td>
+                        </tr>
+                        <tr>
+                            <td class="w-50">ანგარიშის ნომერი:</td>
+                            <td class="w-50"><span t-esc="bank.acc_number"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <t t-set="head_doctor" t-value="doc.env['res.users'].sudo().search([('is_head_doctor', '=', True)], limit=1)" />
+                <div class="d-flex justify-content-end">
+                    <table class="w-50 border-white">
+                        <tbody>
+                            <tr>
+                                <td>Signature:</td>
+                                <td>
+                                    <p class="py-1" style="border-bottom: 1px solid black;">
+                                        <img t-attf-src="data:image/png;base64,{{ head_doctor.kw_facsimile }}" 
+                                            style="max-height: 50px; max-width: 100px;"/>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Director:</td>
+                                <td>
+                                    <p class="py-1"><span t-esc="head_doctor.kw_conclusion_signature_name"/></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="kw_gem_invoicing_container2_p1">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="kw_gem_invoicing.kw_gem_invoicing_template_inv2_p1"/>
+            </t>
+            <div t-attf-class="footer">
+                <div class="text-center" style="border-top: 1px solid black;">
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        Page: <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+</odoo>

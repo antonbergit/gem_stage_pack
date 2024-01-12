@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+
+    <record id="account_move_mail_template" model="mail.template">
+        <field name="name">Invoice Email</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="subject">{{ object.name }}: {{ object.partner_id.name }}</field>
+        <field name="email_from">{{ (user.company_id.email ) }}</field>
+        <field name="email_to">{{ object.partner_id.email_formatted }}</field>
+        <!-- <field name="email_to">{{ ', '.join(object.partner_id.kw_financial_email_ids.mapped('name')) }}</field> -->
+        <field name="description">Invoice info.</field>
+        <field name="body_html" type="html">
+
+            <table border="0" cellpadding="0" cellspacing="0" 
+                style="padding-top: 16px; background-color: #FFFFFF; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                <tr>
+                    <td align="center">
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" 
+                            style="padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse:separate;">
+                            <tbody>
+                                <!-- CONTENT -->
+                                <tr>
+                                    <td align="center" style="min-width: 590px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                            <tr>
+                                                <td valign="top" style="font-size: 13px;">
+                                                    <div>
+                                                        <p>
+                                                            გამარჯობა,<br/>
+                                                            Dear Sir / Madam<br/><br/>
+                                                            გიგზავნით ინვოისს.<br/>
+                                                            We are sending invoice.<br/><br/>
+                                                            პატივისცემით,<br/>
+                                                            Sincerely,<br/><br/>
+                                                            პათოლოგიის კვლევითი ცენტრი<br/>
+                                                            Pathology Research Center<br/><br/>
+                                                            ქ.თბილისი, ჩაჩავას ქ. №1; 0159.<br/>
+                                                            ტ: 00(995) 032 2 47 59 60,<br/>
+                                                            e-mail: info@pathlab.ge<br/>
+                                                            Chachava str. №1, 0159; Tbilisi; Georgia;<br/>
+                                                            Phone: 00(995) 032 2 47 59 60<br/>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center;">
+                                                    <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <!-- FOOTER -->
+                                <tr>
+                                    <td>
+                                        <div class="text-center">
+                                            <div class="row">
+                                                <div class="col-4 mb-4 text-start">
+                                                    <img t-attf-src="/logo.png?company={{ object.company_id.id }}" style="max-height:40px;" t-att-alt="object.company_id.name"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+</odoo>

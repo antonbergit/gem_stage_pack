@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="kw_gem_invoicing_template_inv2_p2" name="inv_2_p2_template">
+        <t t-call="web.basic_layout">
+            <t t-set="doc" t-value="doc"/>
+            <t t-set="user" t-value="request.env.user"/>
+
+            <!-- Second Page  -->
+            <!-- <div class="page" style="page-break-after:always;"> -->
+            <div class="page">
+                <div class="text-center border-bottom">
+                    <div class="row py-1">
+                        <div class="col-3 mb4 text-left">
+                            <img t-attf-src="/logo.png?company={{ doc.company_id.id }}" style="max-height:110px;" t-att-alt="doc.company_id.name"/>
+                        </div>
+                        <div class="col-9 text-right">
+                            <!-- <span t-esc="doc.company_id.kw_header_to_template"/> -->
+                            <span>ქ.თბილისი, ჩაჩავას ქ. №1; 0159. ტ: 00(995) 032 2 47 59 60, e-mail: info@pathlab.ge</span>
+                        </div>
+                    </div>
+                </div>
+                <br/><br/>
+                <h4 class="mt-5 fw-bold">ინვოისის დეტალური ჩაშლა</h4>
+                <table class="w-50 text-start border-white">
+                    <tbody>
+                        <tr>
+                            <td class="w-50">ინვოისის ნომერი:</td>
+                            <td class="w-50"><span t-field="doc.name"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span t-field="doc.narration"/></td>
+                        </tr>
+                        <tr>
+                            <td>დამკვეთი:</td>
+                            <td><span t-field="doc.partner_id.name"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <table class="table table-bordered border-dark w-100">
+                    <thead class="text-center border-dark">
+                        <tr>
+                            <th>ორდერის N</th>
+                            <th>ორდერის თარიღი</th>
+                            <th>პაციენტი</th>
+                            <th>ს/კ</th>
+                            <th>სერვისის დასახელება</th>
+                            <th>თანხა</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="case" t-value="doc.invoice_origin"/>
+                        <t t-foreach="doc.invoice_line_ids" t-as="line">
+                            <t t-if="'Additional Discount' not in line.name">
+                                <t t-set="order" t-value="doc.env['sale.order'].sudo().search([('name', '=', case)], limit=1)"/>  
+                                <t t-if="line.display_type == 'line_section'">
+                                    <t t-set="case" t-value="line.name"/>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <td><span t-esc="case"/></td>
+                                        <td style="min-width: 180px;"><span t-esc="order.date_order"/></td>
+                                        <td><span t-esc="order.kw_patient_id.name"/></td>
+                                        <td><span t-esc="order.kw_patient_vat"/></td>
+                                        <td><span t-esc="line.name"/></td>
+                                        <td class="text-end"><span t-esc="line.price_total"/></td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </t>
+                        <tr style="border: 1px solid white;">
+                            <td colspan="6"></td>
+                        </tr>
+                        <tr style="border: 1px solid white;">
+                            <td colspan="5" style="border-right: 1px solid black;"></td>
+                            <td style="border: 1px solid black; font-weight: bold; text-align: end;"><span t-esc="doc.kw_total_payable_amount"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="kw_gem_invoicing_container2_p2">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="kw_gem_invoicing.kw_gem_invoicing_template_inv2_p2"/>
+            </t>
+            <div t-attf-class="footer">
+                <div class="text-center" style="border-top: 1px solid black;">
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        Page: <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+</odoo>

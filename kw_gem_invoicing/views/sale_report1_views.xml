@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="invoicing_sale_report_view_tree" model="ir.ui.view">
+        <field name="name">kw.gem.invoicing.report.view.tree(kw_gem_invoicing)</field>
+        <field name="model">kw.gem.sale.report</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="false" edit="false" default_order='date desc'>
+                <field name="name"/>
+                <field name="kw_stage" optional="show"/>
+                <field name="date" string="Order Date" optional="show"/>
+                <field name="conclusion_date" optional="show"/>
+                <field name="archive_date" optional="show"/>
+                <field name="month_end_date" optional="show"/>
+                <field name="patient_id"/>
+                <field name="years_old_on_report" optional="show"/>
+                <field name="years_old_on_conclusion" attrs="{'invisible': [('years_old_on_conclusion','=',0)]}" optional="show" class="text-right"/>
+                <field name="gender" optional="show"/>
+                <field name="service_name" optional="show"/>
+                <field name="doctor_1" optional="show"/>
+                <field name="doctor_2" optional="show"/>
+                <field name="service_code" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="agreement_id" string="Main Agreement" optional="show"/>
+                <field name="payer_name" optional="show"/>
+                <field name="agreement_name" optional="show"/>
+                <field name="payer_types" optional="show"/>
+                <field name="subtotal_before_discount" optional="show"/>
+                <field name="total_discount_amount" optional="show"/>
+                <field name="total_service" string="Total Payable Amount" optional="show"/>
+                <field name="total_patient" string="Total Payable Amount for Patient" optional="show"/>
+                <field name="payments_sum" string="Payment Made by Patient" optional="show"/>
+                <field name="payments_amount_due" string="Patient's Amount Due" optional="show"/>
+                <field name="total_payers" optional="show"/>
+                <field name="invoiced_amount_for_other" optional="show"/>
+                <field name="not_invoiced_amount_for_other" string="Not Invoiced Amount to Other Payers" optional="show"/>
+                <field name="invoice_status" optional="show"/>
+                <field name="invoice_number" string="Invoice Number"/>
+                <field name="invoice_date" string="Invoice Date"/>
+                <field name="clinical_diagnosis_id" optional="show"/>
+                <field name="sending_organization" optional="show"/>
+                <field name="surgery_name_id" optional="show"/>
+                <field name="surgery_date" optional="show"/>
+                <field name="received_material" optional="show"/>
+                <field name="total_containers" optional="show"/>
+                <field name="total_cassettes" optional="show"/>
+                <field name="total_slides" optional="show"/>
+                <field name="number_of_services" optional="show"/>
+                <field name="names_of_services" optional="show"/>
+                <field name="sample_names" optional="show"/>
+                <field name="examtype_numbers" optional="show"/>
+                <field name="examination_names" string="Examination Names"/>
+                <field name="sample_qty" optional="show"/>
+                <field name="cassette_qty" optional="show"/>
+                <field name="slide_qty" optional="show"/>
+                <field name="icd" optional="show"/>
+                <field name="questionnaire" optional="show"/>
+                <field name="microscopy" optional="show"/>
+                <field name="user_id" optional="show"/>
+                <field name="res_lab_assist" string="Responsible Laboratory Assistant" optional="show"/>
+                <field name="user_create_by" string="Conclusion Created by" optional="show"/>
+                <field name="user_complete_by" string="Conclusion Completed by" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="invoicing_sale_report_view_search" model="ir.ui.view">
+        <field name="name">kw.gem.invoicing.report.view.search(kw_gem_invoicing)</field>
+        <field name="model">kw.gem.sale.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Sale order"/>
+                <field name="kw_stage" string='Order Status'/>
+                <field name="month_end_date" string="Month end date" context="{'group_by': 'date:month'}"/>
+                <field name="patient_id" string="Patient"/>
+                <field name="years_old_on_report" string="Years old (on report date)"/>
+                <field name="years_old_on_conclusion" string="Years old (on conclusion date)"/>
+                <field name="gender" string="Gender"/>
+                <field name="service_name" string="Service Name"/>
+                <field name="doctor_1" string="Doctor 1"/>
+                <field name="doctor_2" string="Doctor 2"/>
+                <field name="service_code" string="Service Code"/>
+                <field name="partner_id" string="Main payer"/>
+                <field name="agreement_id" string="Main Agreement"/>
+                <field name="subtotal_before_discount" string="Subtotal Before Discount"/>
+                <field name="total_discount_amount" string="Total Discount for Service"/>
+                <field name="total_service" string="Total Payable Amount"/>
+                <field name="total_patient" string="Total Payable Amount for Patient"/>
+                <field name="total_payers" string="Total Payable Amount for Other Payers"/>
+                <field name="invoiced_amount_for_other" string=""/>
+                <field name="not_invoiced_amount_for_other" string=""/>
+                <field name="invoice_status" string="Invoice Status for Order"/>
+                <field name="clinical_diagnosis_id" string="Diagnosis from Initial Document"/>
+                <field name="sending_organization" string="Sending Organization"/>
+                <field name="surgery_name_id" string="Surgery Name"/>
+                <field name="received_material" string="Materials from Initial Document"/>
+                <field name="total_containers" string="Total Incoming Containers"/>
+                <field name="total_cassettes" string="Total Incoming Cassettes"/>
+                <field name="total_slides" string="Total Incoming Slides"/>
+                <field name="number_of_services" string="Number of services"/>
+                <field name="names_of_services"  optional="show"/>
+                <field name="sample_names" optional="show"/>
+                <field name="examtype_numbers" optional="show"/>
+                <field name="examination_names" string="Examination Names"/>
+                <field name="sample_qty" string="Sample Qty"/>
+                <field name="cassette_qty" string="Cassette Qty"/>
+                <field name="slide_qty" string="Slide Qty"/>
+                <field name="icd" string="ICD from conlcusion"/>
+                <field name="microscopy" string="Macroscopy template"/>
+                <field name="user_id" string="Salesperson"/>
+                <field name="res_lab_assist" string="Responsible Laboratory Assistant"/>
+                <field name="user_create_by" string="Conclusion Created by"/>
+                <field name="user_complete_by" string="Conclusion Completed by"/>
+                <filter name="date" date="date" string='Order date'/>
+                <filter name="conclusion_date" date="date" string='Conclusion date'/>
+                <filter name="archive_date" date="date" string="Archive date"/>
+                <filter name="surgery_date" date="date" string="Surgery Date"/>
+                <!-- <filter name="payments_sum" optional="show" string="Payment Made by Patient"/> -->
+            </search>
+        </field>
+    </record>
+
+    <record id="kw_gem_invoicing_order_report_form_1_action" model="ir.actions.act_window">
+        <field name="name">Report on Cases (1 case - 1 line)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">kw.gem.sale.report</field>
+        <field name="view_mode">tree,search</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Order Report (form 1)
+            </p>
+        </field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kw_gem_invoicing_view_move_form" model="ir.ui.view">
+        <field name="name">account.move.form (kw_gem_invoicing)</field>
+        <field name="model">account.move</field>
+        <field name="priority" eval="17"/>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//form//sheet/div[hasclass('oe_button_box')]" position="inside">
+                <button  class="oe_stat_button" type="object"
+                    name="action_payment"
+                    icon="fa-cogs">
+                    <field string="Payments" name="kw_payments_qty"
+                    widget="statinfo"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='tax_totals']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group" position="after">
+                <field name="kw_invoice_type" invisible="1"/>
+                <tr>
+                    <td><span class="o_form_label">Invoicing Period:</span></td>
+                    <td>
+                        <span class="o_form_label">from</span>
+                        <field name="kw_date_from" attrs="{'invisible': [('kw_invoice_type', '!=', 'consolidated')]}" readonly="1"/>
+                        <span class="o_form_label">  to</span>
+                        <field name="kw_date_to" attrs="{'invisible': [('kw_invoice_type', '!=', 'consolidated')]}" readonly="1"/>
+                    </td>
+                </tr>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']" position="after">
+                <label for="kw_set_discount"/>
+                <field name="kw_set_discount" attrs="{'readonly': [('state', 'not in', 'draft')]}" style="width: 7%"/>
+                <button name="recompute_coupon_lines" class="btn-primary kw-gem-right-button-2" string="Apply"
+                        type="object" states="draft"/>
+            </xpath>
+            <xpath expr="//field[@name='tax_totals']" position="after">
+                <field name="kw_subtotal_before_discount" colspan="2"/>
+                <field name="kw_discount_amount" force_save="1" colspan="2"/>
+                <field name="kw_total_payable_amount" colspan="2"/>
+                <field name="kw_add_discount" colspan="2" readonly="1" force_save="1"/>
+                <field name="kw_total_add_discount" colspan="2" invisible="1"/>
+                <field name="kw_final_payable_amount" colspan="2"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="attributes">
+                <attribute name="string">Service</attribute>
+                 <attribute name="invisible">1</attribute>
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="attributes">
+                <attribute name="invisible">0</attribute>
+                <attribute name="string">Service</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="attributes">
+                <attribute name="string">Unit Price</attribute>
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
+                <field name="kw_subtotal_before_discount" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='tax_ids']" position="attributes">
+                <attribute name="optional">hidden</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='tax_ids']" position="after">
+                <field name="kw_discount_amount" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='kw_discount_amount']" position="after">
+                <field name="discount" position="move"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='discount']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='tax_ids']" position="attributes">
+                 <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_total']" position="attributes">
+                 <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="after">
+                <field name="kw_quantity" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="attributes">
+                 <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='discount']" position="attributes">
+                <attribute name="string">Discount (%)</attribute>
+                <attribute name="optional">show</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/control/create[@name='add_note_control']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//page[@id='aml_tab']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//label[@for='journal_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@name='journal_div']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- there is two the same buttons for some reason so both are changed  -->
+            <xpath expr="//button[@name='action_invoice_sent'][1]" position="attributes">
+                <attribute name="string">Send</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_invoice_sent'][2]" position="attributes">
+                <attribute name="string">Send</attribute>
+            </xpath>
+            
+            <xpath expr="//button[@name='preview_invoice']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='preview_invoice']" position="after">
+                <button name="preview_invoice_1" type="object" string="Preview Inv-1" data-hotkey="o"
+                    title="Preview invoice"
+                    attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>
+                <button name="preview_invoice_2p1" type="object" string="Preview Inv-2 p1" data-hotkey="o"
+                    title="Preview invoice"
+                    attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>
+                <button name="preview_invoice_2p2" type="object" string="Preview Inv-2 p2" data-hotkey="o"
+                    title="Preview invoice"
+                    attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="kw_gem_invoicing_view_move_tree_view" model="ir.ui.view">
+        <field name="name">account.move (kw_gem_invoicing)</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="after">
+                <field name="kw_invoice_type" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

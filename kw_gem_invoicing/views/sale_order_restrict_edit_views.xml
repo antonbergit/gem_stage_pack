@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="kw_gem_restrict_edit_archived_sale_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form (kw_gem_timer)</field>
+        <field name="model">sale.order</field>
+        <field name="priority" eval="111"/>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_agreement_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_sending_organization']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_order_type']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_patient_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_payment_method_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='add_payers_action']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': ['|', ('kw_stage', '=', 'archive'), ('state', 'in', ('done','cancel'))]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_container_ids']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': ['|', ('kw_stage', '=', 'archive'), ('is_junior_doctor_readonly', '=', 'True')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='add_container_action']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': ['|', ('is_junior_doctor_readonly', '=', 'True'), ('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='kw_sample_ids']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='add_sample_action']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='kw_conclusion_start_date']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_conclusion_medical_history']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_clinical_diagnosis']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_surgery_name']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_surgery_name_ids']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_surgery_date']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_conclusion_microscopy_text']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_conclusion_received_samples']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_clinical_diagnose_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_morphology_diagnoses_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_icd_t_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='kw_conclusion_note']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='add_document_action']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='kw_payroll_ids']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='team_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='client_order_ref']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='fiscal_position_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='commitment_date']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='campaign_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='medium_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='source_id']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('kw_stage', '=', 'archive')]}
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

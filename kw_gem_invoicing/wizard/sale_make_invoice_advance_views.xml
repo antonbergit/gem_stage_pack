@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kw_gem_view_sale_advance_payment_inv" model="ir.ui.view">
+        <field name="name">Invoice Orders</field>
+        <field name="model">sale.advance.payment.inv</field>
+        <field name="inherit_id" ref="sale.view_sale_advance_payment_inv"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/group/field[@name='advance_payment_method']" position="before">
+                <field name="kw_payer_ids" invisible="1"/>
+<!--                <field name="kw_payer_is_visible" invisible="1"/>-->
+                <field name="kw_payer_is_required" invisible="1"/>
+                <field name="kw_payer_id" widget="radio" attrs="{'required':[('kw_payer_is_required','=',True)]}"/>
+<!--                'invisible': [('kw_payer_is_visible','=',False)],-->
+                <field name="kw_invoice_type" invisible="1"/>
+            </xpath>
+            <xpath expr="//footer/button[@id='create_invoice_open']" position="attributes">
+                <attribute name="attrs">{'invisible': [('kw_invoice_type', '=', 'consolidated')]}</attribute>
+            </xpath>
+            <xpath expr="//footer/button[@id='create_invoice']" position="attributes">
+                <attribute name="attrs">{'invisible': [('kw_invoice_type', '=', 'consolidated')]}</attribute>
+            </xpath>
+            <xpath expr="//footer/button[@id='create_invoice']" position="after">
+                <button name="create_consolidated_inv" id="create_consolidated_inv_open" string="Create and View Invoice" type="object"
+                            context="{'open_invoices': True}" class="btn-primary" data-hotkey="q" attrs="{'invisible': [('kw_invoice_type', '=', 'single')]}"/>
+                <button name="create_consolidated_inv" id="create_consolidated_inv" string="Create Invoice" type="object"
+                        data-hotkey="w" attrs="{'invisible': [('kw_invoice_type', '=', 'single')]}"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="action_view_sale_consolidated_inv" model="ir.actions.act_window">
+            <field name="name">Create Consolidated Invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.advance.payment.inv</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="sale.model_sale_order" />
+            <field name="binding_view_types">list</field>
+            <field name="context" eval="{'kw_invoice_type': 'consolidated'}"/>
+        </record>
+
+<!--    <record id="action_view_sale_dont_show" model="ir.actions.act_window">-->
+<!--            <field name="name">Create invoices</field>-->
+<!--            <field name="inherit_id" ref="sale.action_view_sale_advance_payment_inv"/>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">sale.advance.payment.inv</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="target">new</field>-->
+<!--            <field name="binding_model_id" ref="sale.model_sale_order" />-->
+<!--            <field name="binding_view_types">list</field>-->
+<!--            <field name="group_ids" eval="[(4, ref('kw_gem_invoicing.dont_show'))]"/>-->
+<!--        </record>-->
+</odoo>

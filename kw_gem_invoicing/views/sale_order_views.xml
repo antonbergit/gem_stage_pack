@@ -1,0 +1,87 @@
+<odoo>
+    <record id="kw_gem_invoicing_sale_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form (kw_gem_invoicing)</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+             <xpath expr="//form//sheet/div[hasclass('oe_button_box')]/button[@name='action_view_invoice']"
+                   position="after">
+                <button class="oe_stat_button" type="object" name="action_payment"
+                        groups="kw_gem.group_kw_gem_sale_manager,sales_team.group_sale_salesman,kw_gem.group_kw_gem_laboratory_assistant,kw_gem.group_kw_gem_junior_doctor,kw_gem.group_kw_gem_financier"
+                        icon="fa-pencil-square-o">
+                        <field string="Payments" name="kw_payments_qty" widget="statinfo"/>
+                </button>
+            </xpath>
+
+            <xpath expr="//field[@name='team_id']" position="after">
+                <field name="kw_report_sample_names" invisible="1"/>
+                <field name="kw_microscopy_text" invisible="1"/>
+                <field name="kw_report_cassette_qty" invisible="1"/>
+                <field name="kw_report_qty_examinations" invisible="1"/>
+                <field name="kw_report_examination_names" invisible="1"/>
+                <field name="kw_report_slide_qty" invisible="1"/>
+                <field name="kw_conclusion_completion_date" invisible="1"/>
+                <field name="kw_report_month_end_date" invisible="1"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice" type="action"
+                        class="btn-primary" data-hotkey="q" attrs="{'invisible': ['|', ('invoice_status', 'not in', ['to invoice', 'partially_invoiced']), ('kw_stage', 'in', ['draft', 'canceled'])]}"
+                        groups="kw_gem.group_kw_gem_sale_manager,sales_team.group_sale_salesman,kw_gem.group_kw_gem_laboratory_assistant,kw_gem.group_kw_gem_junior_doctor,kw_gem.group_kw_gem_financier"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('state', 'in', ('done','cancel'))]}
+                </attribute>
+            </xpath>
+           <!-- <xpath expr="//button[@name='action_view_invoice']" position="attributes">
+               <attribute name="groups">kw_gem.group_kw_gem_financier,kw_gem.group_kw_gem_sale_manager,sales_team.group_sale_salesman,-kw_gem.group_kw_gem_laboratory_assistant,-kw_gem.group_kw_gem_junior_doctor</attribute>
+           </xpath>
+
+           <xpath expr="//field[@name='order_line']//tree//field[@name='tax_id']" position="attributes">
+               <attribute name="groups">-kw_gem.group_kw_gem_registrar</attribute>
+           </xpath> -->
+        </field>
+    </record>
+
+    <record id="kw_gem_view_sales_order_filter" model="ir.ui.view">
+        <field name="name">sale.order.list.select</field>
+        <field name="model">sale.order</field>
+        <field name="priority" eval="15"/>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter string="Order Date" name="date_order" date="date_order"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="kw_gem_sale_order_view_search_inherit_sale" model="ir.ui.view">
+        <field name="name">sale.order.list.select</field>
+        <field name="model">sale.order</field>
+        <field name="priority" eval="15"/>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='order_date']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="kw_gem_sale_order_payment_tree" model="ir.ui.view">
+        <field name="name">sale.order.account.payment.tree</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <tree>
+                <button type="object" string="Open" name="open_full_record" icon="fa-arrow-right"/>
+                <field name="date"/>
+                <field name="name"/>
+                <field name="journal_id"/>
+                <field name="payment_method_line_id"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="amount_company_currency_signed" widget="monetary" string="Amount" sum="Total"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'posted'"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

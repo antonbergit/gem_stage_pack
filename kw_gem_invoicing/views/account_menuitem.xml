@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+            id="kw_gem_invoicing_order_report_form_1_menu"
+            name="Report on Cases (1 case - 1 line)"
+            groups="kw_gem.group_kw_gem_financier,kw_gem.group_kw_gem_doctor_director,kw_gem.group_kw_gem_registrar,base.group_system"
+            parent="account.menu_finance_reports"
+            action="kw_gem_invoicing_order_report_form_1_action"
+            sequence="300"/>
+
+    <menuitem
+            id="kw_gem_invoicing_order_report_form_2_menu"
+            name="Report on Cases/Payers (1 case - number of payers)"
+            groups="kw_gem.group_kw_gem_financier,kw_gem.group_kw_gem_doctor_director,kw_gem.group_kw_gem_registrar,base.group_system"
+            parent="account.menu_finance_reports"
+            action="kw_gem_invoicing_order_report_form_2_action"
+            sequence="400"/>
+
+    <menuitem
+            id="kw_gem_invoicing_service_report_form_1_menu"
+            name="Report on Services (1 service from case - 1 line)"
+            groups="kw_gem.group_kw_gem_financier,kw_gem.group_kw_gem_doctor_director,kw_gem.group_kw_gem_registrar,base.group_system"
+            parent="account.menu_finance_reports"
+            action="kw_gem_invoicing_service_report_form_1_action"
+            sequence="500"/>
+
+    <menuitem
+            id="kw_gem_invoicing_payer_report_form_2_menu"
+            name="Report on Services/Payers (1 service - number of payers)"
+            groups="kw_gem.group_kw_gem_financier,kw_gem.group_kw_gem_doctor_director,kw_gem.group_kw_gem_registrar,base.group_system"
+            parent="account.menu_finance_reports"
+            action="kw_gem_invoicing_payer_report_form_2_action"
+            sequence="600"/>
+
+    <menuitem
+            id="kw_gem_report_service_payer_invoice_menu"
+            name="Report on Services/Payers (with invoices)"
+            groups="kw_gem.group_kw_gem_financier,kw_gem.group_kw_gem_doctor_director,kw_gem.group_kw_gem_registrar,base.group_system"
+            parent="account.menu_finance_reports"
+            action="kw_gem_report_service_payer_invoice_action"
+            sequence="700"/>
+
+    <record id="account.menu_finance_reports" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(6, 0, [ref('kw_gem.group_kw_gem_financier'), ref('kw_gem.group_kw_gem_doctor_director'), ref('base.group_system'),  ref('kw_gem.group_kw_gem_registrar')])]"/>
+    </record>
+
+    <record id="account.menu_action_account_invoice_report_all" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(6, 0, [ref('base.group_system')])]"/>
+    </record>
+
+    <record id="account.menu_finance" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(6, 0, [ref('account.group_account_invoice')])]"/>
+    </record>
+
+    <record id="account.menu_finance_entries_management" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(6, 0, [ref('base.group_system')])]"/>
+    </record>
+
+</odoo>

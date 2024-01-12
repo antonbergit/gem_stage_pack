@@ -1,0 +1,15 @@
+<odoo noupdate="1">
+    <record forcecreate="True" id="ir_cron_kw_gem_invoicing_update_diagnosis" model="ir.cron">
+        <field name="name">GEM update sale order diag</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_update_diagnosis()
+model._cron_compute_fields()
+model._cron_compute_invoice()
+        </field>
+        <field name="interval_number">10</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>
