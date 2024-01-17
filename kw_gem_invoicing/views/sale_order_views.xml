@@ -5,6 +5,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="priority">100</field>
         <field name="arch" type="xml">
+            <!--
              <xpath expr="//form//sheet/div[hasclass('oe_button_box')]/button[@name='action_view_invoice']"
                    position="after">
                 <button class="oe_stat_button" type="object" name="action_payment"
@@ -13,6 +14,7 @@
                         <field string="Payments" name="kw_payments_qty" widget="statinfo"/>
                 </button>
             </xpath>
+            -->
 
             <xpath expr="//field[@name='team_id']" position="after">
                 <field name="kw_report_sample_names" invisible="1"/>

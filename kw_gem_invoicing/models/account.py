@@ -1,4 +1,5 @@
 import logging
+import base64
 
 from collections import defaultdict
 from odoo.tools import frozendict
@@ -159,6 +160,81 @@ class AccountMove(models.Model):
                 lambda x: obj.id in x.reconciled_invoice_ids.ids)
             obj.kw_payments_qty = len(payment_ids.ids)
             obj.write({'kw_payments_ids': [(6, 0, payment_ids.ids)]})
+
+    # SEND INVOICE
+    # ============
+    def kw_action_invoice_sent(self):
+        """ Open a window to compose an email, with the edi invoice template
+            message loaded by default
+        """
+        self.ensure_one()
+        self.partner_id.set_email_if_empty()
+        template = self.env.ref(
+            'kw_gem_invoicing.account_move_mail_template'
+        )
+        lang = template._render_lang(self.ids)[self.id]
+        compose_form = self.env.ref(
+            'kw_gem_invoicing.kw_account_invoice_send_wizard_form',
+            raise_if_not_found=False
+        )
+        attachments = self.kw_create_report_attachments(template)
+        template.attachment_ids = [(6, None, attachments)]
+        context = dict(
+            default_model='account.move',
+            default_res_id=self.id,
+            default_res_model='account.move',
+            default_use_template=bool(template),
+            default_template_id=template and template.id or False,
+            default_composition_mode='comment',
+            mark_invoice_as_sent=True,
+            default_email_layout_xmlid="mail"
+            ".mail_notification_layout_with_responsible_signature",
+            model_description=self.with_context(lang=lang).type_name,
+            force_email=True,
+            active_ids=self.ids,
+        )
+        return {
+            'name': _('Send Invoice'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'account.invoice.send',
+            'views': [(compose_form.id, 'form')],
+            'view_id': compose_form.id,
+            'target': 'new',
+            'context': context,
+        }
+
+    def kw_create_report_attachments(self, template):
+        """ Create attachments for sending email wizard.
+            Get <- template obj
+            Return -> list(int), new attachments ids
+        """
+        attachments = []
+        reports = template.kw_report_template_ids
+        for rep in reports:
+            report_name = rep.print_report_name.split('%')[0][1:] + self.name
+
+            if rep.report_type in ['qweb-html', 'qweb-pdf']:
+                data, report_format = self.env[
+                    'ir.actions.report'
+                ]._render_qweb_pdf(rep, [self.id])
+            else:
+                data, report_format = self.env[
+                    'ir.actions.report'
+                ]._render(rep, [self.id])
+            extension = f'.{report_format}'
+            if not report_name.endswith(extension):
+                report_name += extension
+            new_attachment = self.env['ir.attachment'].create({
+                'name': report_name,
+                'datas': base64.b64encode(data),
+                'type': 'binary',
+                'res_model': 'account.move',
+                'res_id': self.id,
+            })
+            attachments.append(new_attachment.id)
+        return attachments
 
     def preview_invoice_1(self):
         self.ensure_one()

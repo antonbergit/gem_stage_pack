@@ -11,3 +11,4 @@ from . import payment
 from . import ir_model
 from . import mail_template
 from . import account_invoice_send
+from . import partner

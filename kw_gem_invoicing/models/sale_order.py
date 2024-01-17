@@ -1,4 +1,5 @@
 import logging
+import time
 
 from datetime import timedelta
 
@@ -250,8 +251,13 @@ class Order(models.Model):
         kw_payer_id = self._context.get('kw_payer_id')
         lines = super()._get_invoiceable_lines(final)
         if not kw_payer_id:
-            return lines
-        return lines.filtered(lambda x: x.order_partner_id.id == kw_payer_id)
+            return lines.filtered(
+                lambda x: x.kw_product_qty == x.qty_to_invoice
+            )
+        return lines.filtered(
+            lambda x: x.order_partner_id.id == kw_payer_id and
+            x.kw_product_qty == x.qty_to_invoice
+        )
 
     def _compute_kw_payments_qty(self):
         for obj in self:
@@ -286,6 +292,7 @@ class Order(models.Model):
         invoice_item_sequence = 0
         invoice_line_vals = []
 
+        time_mark = time.time()
         invoice_vals = self[0]._prepare_invoice()
         for order in self:
             order = order.with_company(order.company_id)
@@ -317,9 +324,19 @@ class Order(models.Model):
 
             invoice_vals['invoice_line_ids'] = invoice_line_vals
         invoice_vals_list.append(invoice_vals)
+        _logger.info("DEBUG#8147#: %5.2f - SO fetch invoiceable_lines",
+                     (time.time() - time_mark))
 
+        time_mark = time.time()
         moves = self.env['account.move'].sudo().with_context(
             default_move_type='out_invoice').create(invoice_vals_list)
+        delta_time = time.time() - time_mark
+        _logger.info("DEBUG#8147#: %5.2f s for %d l (r %7.5f spl)- AM=>AML", (
+            delta_time,
+            len(invoice_vals_list[0]['invoice_line_ids']),
+            delta_time / len(invoice_vals_list[0]['invoice_line_ids'])
+        ))
+
         if final:
             moves.sudo().filtered(lambda m: m.amount_total < 0). \
                 action_switch_invoice_into_refund_credit_note()

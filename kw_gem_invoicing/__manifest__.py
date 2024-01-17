@@ -7,7 +7,7 @@
 
     'category': 'Customizations',
     'license': 'OPL-1',
-    'version': '16.0.0.0.38',
+    'version': '16.0.0.0.39',
 
     'depends': [
         'kw_gem_conclusion_survey',
@@ -17,6 +17,7 @@
 
     'data': [
         'wizard/sale_make_invoice_advance_views.xml',
+        'wizard/account_invoice_send_views.xml',
 
         'data/ir_cron_compute_fields.xml',
         'data/mail_template_data.xml',

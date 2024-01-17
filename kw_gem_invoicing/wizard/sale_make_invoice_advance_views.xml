@@ -14,16 +14,16 @@
                 <field name="kw_invoice_type" invisible="1"/>
             </xpath>
             <xpath expr="//footer/button[@id='create_invoice_open']" position="attributes">
-                <attribute name="attrs">{'invisible': [('kw_invoice_type', '=', 'consolidated')]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('kw_invoice_type', '=', 'consolidated'), ('kw_payer_id', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//footer/button[@id='create_invoice']" position="attributes">
-                <attribute name="attrs">{'invisible': [('kw_invoice_type', '=', 'consolidated')]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('kw_invoice_type', '=', 'consolidated'), ('kw_payer_id', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//footer/button[@id='create_invoice']" position="after">
                 <button name="create_consolidated_inv" id="create_consolidated_inv_open" string="Create and View Invoice" type="object"
-                            context="{'open_invoices': True}" class="btn-primary" data-hotkey="q" attrs="{'invisible': [('kw_invoice_type', '=', 'single')]}"/>
+                            context="{'open_invoices': True}" class="btn-primary" data-hotkey="q" attrs="{'invisible': ['|', ('kw_invoice_type', '=', 'single'), ('kw_payer_id', '=', False)]}"/>
                 <button name="create_consolidated_inv" id="create_consolidated_inv" string="Create Invoice" type="object"
-                        data-hotkey="w" attrs="{'invisible': [('kw_invoice_type', '=', 'single')]}"/>
+                        data-hotkey="w" attrs="{'invisible': ['|', ('kw_invoice_type', '=', 'single'), ('kw_payer_id', '=', False)]}"/>
             </xpath>
         </field>
     </record>

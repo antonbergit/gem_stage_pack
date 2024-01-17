@@ -15,24 +15,4 @@
         </field>
     </record>
 
-    <record id="kw_account_invoice_send_wizard_form_inherit" model="ir.ui.view">
-        <field name="name">account.invoice.send.form (kw_vchasno_account)</field>
-        <field name="model">account.invoice.send</field>
-        <field name="inherit_id" ref="account.account_invoice_send_wizard_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='partner_ids']" position="attributes">
-                <attribute name="options">{'no_create': True}</attribute>
-            </xpath>
-            <xpath expr="//footer//button[2]" position="attributes">
-                <attribute name="name">kw_send_and_print_action</attribute>
-            </xpath>
-            <xpath expr="//field[@name='partner_ids']" position="after">
-                <div>
-                    <span>Financial emails: </span>
-                    <field name="kw_additional_recipients" widget="many2many_tags"/>
-                </div>
-            </xpath>
-        </field>
-    </record>
-
 </odoo>

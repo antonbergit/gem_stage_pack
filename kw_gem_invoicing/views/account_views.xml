@@ -104,12 +104,14 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-            <!-- there is two the same buttons for some reason so both are changed  -->
+            <!-- rename 'Send & Print' to 'Send', and change source function   -->
             <xpath expr="//button[@name='action_invoice_sent'][1]" position="attributes">
                 <attribute name="string">Send</attribute>
+                <attribute name="name" >kw_action_invoice_sent</attribute>
             </xpath>
-            <xpath expr="//button[@name='action_invoice_sent'][2]" position="attributes">
+            <xpath expr="//button[@name='action_invoice_sent']" position="attributes">
                 <attribute name="string">Send</attribute>
+                <attribute name="name" >kw_action_invoice_sent</attribute>
             </xpath>
             
             <xpath expr="//button[@name='preview_invoice']" position="attributes">
