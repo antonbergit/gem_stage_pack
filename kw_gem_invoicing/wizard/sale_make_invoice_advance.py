@@ -62,11 +62,11 @@ class SaleAdvancePaymentInv(models.TransientModel):
             result['kw_payer_id'] = payer_ids[0]
 
         delta_time = time.time() - time_mark
-        _logger.info("DEBUG#8147#: %5.2f s for %d l (r %7.5f spl)- WIZARD", (
-            delta_time,
-            len(orders_to_invoice),
+        _logger.info(
+            "DEBUG#8147#: %5.2f s for %d l (r %7.5f spl)- WIZARD",
+            delta_time, len(orders_to_invoice),
             delta_time / len(orders_to_invoice)
-        ))
+        )
 
         return result
 
@@ -87,8 +87,10 @@ class SaleAdvancePaymentInv(models.TransientModel):
         time_mark = time.time()
         sale_orders = self.env['sale.order'].browse(
             self._context.get('active_ids', []))
-        _logger.info("DEBUG#8147#: %5.2f - BROWSE ORDERS",
-                     (time.time() - time_mark))
+        _logger.info(
+            "DEBUG#8147#: %5.2f - BROWSE ORDERS",
+            (time.time() - time_mark)
+        )
         for sale_order_id in sale_orders:
             kw_date_order = sale_order_id.date_order
 
@@ -105,8 +107,10 @@ class SaleAdvancePaymentInv(models.TransientModel):
             kw_payer_id=self.kw_payer_id.id,
             kw_invoice_type='consolidated')._create_consolidated_inv(
             final=self.deduct_down_payments)
-        _logger.info("DEBUG#8147#: %5.2f - SO CREATES AM",
-                     (time.time() - time_mark))
+        _logger.info(
+            "DEBUG#8147#: %5.2f - SO CREATES AM",
+            (time.time() - time_mark)
+        )
         if len(move_id) == 1:
             res = {
                 'type': 'ir.actions.act_window',

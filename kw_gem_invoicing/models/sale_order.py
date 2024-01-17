@@ -324,18 +324,20 @@ class Order(models.Model):
 
             invoice_vals['invoice_line_ids'] = invoice_line_vals
         invoice_vals_list.append(invoice_vals)
-        _logger.info("DEBUG#8147#: %5.2f - SO fetch invoiceable_lines",
-                     (time.time() - time_mark))
+        _logger.info(
+            "DEBUG#8147#: %5.2f - SO fetch invoiceable_lines",
+            (time.time() - time_mark)
+        )
 
         time_mark = time.time()
         moves = self.env['account.move'].sudo().with_context(
             default_move_type='out_invoice').create(invoice_vals_list)
         delta_time = time.time() - time_mark
-        _logger.info("DEBUG#8147#: %5.2f s for %d l (r %7.5f spl)- AM=>AML", (
-            delta_time,
-            len(invoice_vals_list[0]['invoice_line_ids']),
+        _logger.info(
+            "DEBUG#8147#: %5.2f s for %d l (r %7.5f spl)- AM=>AML",
+            delta_time, len(invoice_vals_list[0]['invoice_line_ids']),
             delta_time / len(invoice_vals_list[0]['invoice_line_ids'])
-        ))
+        )
 
         if final:
             moves.sudo().filtered(lambda m: m.amount_total < 0). \
